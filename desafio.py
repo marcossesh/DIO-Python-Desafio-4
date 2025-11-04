@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Contalterador:
     def __init__(self, contas):
         self.contas = contas
@@ -140,6 +142,17 @@ def generator(transacoes, tipo=None):
     for transacao in transacoes:
         if tipo is None or transacao["tipo"] == tipo:
             yield transacao
+
+def log(func):
+    def wrapper(*args, **kwargs):
+        inicio = datetime.now()
+        resultado = func(*args, **kwargs)
+        fim = datetime.now()
+        duracao = fim - inicio
+        with open("log.txt", "a") as f:
+            f.write(f"{inicio} - {fim} | {duracao} | {func.__name__}\n")
+        return resultado
+    return wrapper
 
 if __name__ == "__main__":
 
